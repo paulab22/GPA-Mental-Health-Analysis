@@ -1,0 +1,101 @@
+---
+title: "Midterm Project Report"
+author: "Paula Buitrago"
+date: "03-12-2025"
+output: html_document
+---
+
+### Introduction: 
+
+For my midterm project, I chose to answer the question: *Do students with higher GPAs report experiencing more mental health issues like depression and anxiety?* I selected this topic because college plays a major role in mental health, and many students, including myself and my peers can relate to the stress and pressure that comes with academic performance. I was particularly interested in whether students who excel academically can also maintain good mental health, as this topic is not often talked about. Additionally, I hope this project raises awareness about mental health and encourages a healthier balance between academics and mental well-being. 
+
+To answer my research question, I used the *Student Mental Health* dataset by Shariful Islam, which I obtained through Kaggle. The dataset was collected through a survey conducted at the University of Malaysia and consists of 101 observations across 11 variables, such as gender, age, and major. I chose this dataset because it directly includes self-reported mental health indicators (depression and anxiety) as well as academic performance (GPA), making it highly relevant for analyzing the relationship between mental health and student achievement. For my analysis, I focused on three variables: depression, anxiety, and GPA. The depression and anxiety variables are represented as "Yes" or "No", while GPA is categorized into ranges (2.50 - 2.99, 3.00 - 3.49, etc.). 
+
+
+
+```{r}
+library(tidyverse)
+df <- read_csv("Student Mental health.csv")
+
+```
+
+
+### Data analysis:
+
+For this project, I performed descriptive analysis to examine the relationship between GPA and mental health variables (depression and anxiety). I renamed the three columns used to answer my question for clarity and to make the coding process easier. Then, I converted GPA from a character to a categorical variable. After this, I generated frequency tables for the depression and anxiety variables to analyze how many students in each GPA range reported experiencing these mental health issues. To visualize my findings, I generated bar plots, which helped me compare the distribution of depression and anxiety across the GPA categories. 
+
+
+
+```{r}
+#to explore
+dim(df)
+str(df)
+head(df)
+tail(df)
+sum(is.na(df))
+summary(df)
+
+```
+
+
+
+```{r}
+df <- df |>
+  rename("depression" = "Do you have Depression?", "anxiety" = "Do you have Anxiety?", "gpa" = "What is your CGPA?")
+df
+
+df$gpa <- as.factor(df$gpa)
+
+str(df)
+
+tab <- table(df$gpa, df$depression) 
+tab
+
+tab2 <- table(df$gpa, df$anxiety) 
+tab2
+
+```
+
+
+```{r}
+
+df_col<- c("thistle1", "orchid1", "orchid3","mediumpurple3", "mediumorchid4") 
+
+barplot(tab, beside = TRUE, col = df_col, 
+        main = "GPA v. Depression",
+        xlab = "GPA",
+        ylab = "Count")
+
+legend("topleft", legend = rownames(tab), fill = df_col, title = "GPA", horiz = FALSE)
+
+
+df_col<- c("lightblue1", "steelblue1", "steelblue","royalblue3", "navy") 
+
+bp <- barplot(tab2, beside = TRUE, col = df_col, 
+        main = "GPA v. Anxiety",
+        xlab = "GPA",
+        ylab = "Count")
+
+legend("topleft", legend = rownames(tab2), fill = df_col, title = "GPA", horiz = FALSE)
+
+```
+
+
+
+### Findings
+
+Through my analysis, I found that students with higher GPAs do report experiencing mental health issues, however, the patterns vary between depression and anxiety. The data shows that students with a GPA between 3.00 - 3.49 reported the highest levels of depression, while those with a GPA of 3.50 - 4.00 reported the highest levels of anxiety. Surprisingly, students with lower GPAs (below 2.99) had significantly fewer reports of depression and anxiety. These findings suggest that academic success may come with higher mental health struggles, possibly due to increased academic pressures and stress. 
+
+These results highlight the need for better mental health support, especially for high-achieving students who may be struggling in ways that are not always easy to tell. Future research could explore additional variables that influence this relationship, such as students' majors age, and gender. Additionally, expanding the dataset to include students from different universities and community colleges would increase the sample size and diversity, leading to more accurate results and clearer trends.
+
+
+### References:
+
+Islam, Shariful. (2021). *Student Mental Health Dataset*. https://www.kaggle.com/datasets/shariful07/student-mental-health. Accessed March 2, 2025.
+
+
+
+
+
+
+
